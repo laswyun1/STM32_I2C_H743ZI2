@@ -47,7 +47,7 @@
 #define I2C_INT8_DATA_NUM 			10
 #define I2C_UINT8_DATA_NUM 			10
 
-#define DATA_TOTAL_BYTE 			100
+#define DATA_TOTAL_BYTE 			100		// Should be Larger than NEEDED
 #define I2C_TOTAL_DATA_NUM			(I2C_DOUBLE_DATA_NUM + I2C_FLOAT_DATA_NUM + I2C_INT32_DATA_NUM + I2C_UINT32_DATA_NUM + I2C_INT16_DATA_NUM + I2C_UINT16_DATA_NUM + I2C_INT8_DATA_NUM + I2C_UINT8_DATA_NUM)
 
 #define SLAVE_ADDR					(0x7f << 1)
@@ -90,6 +90,7 @@ typedef struct _IOIF_I2CObj_t {
 
 	uint8_t ParsedI2CByteData[DATA_TOTAL_BYTE];
 } IOIF_I2CObj_t;
+
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
