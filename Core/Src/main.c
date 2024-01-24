@@ -103,14 +103,9 @@ typedef struct _IOIF_I2CObj_t {
 /* USER CODE BEGIN PV */
 /* For DMA I2C Communication (with DMA) */
 static uint8_t i2c1CommDmaTxBuff[DATA_TOTAL_BYTE] __attribute__((section(".i2c1TxBuff"))) = {0};
-static uint8_t i2c1CommDmaRxBuff[DATA_TOTAL_BYTE] __attribute__((section(".i2c1RxBuff"))) = {0};
-static uint8_t i2c2CommDmaTxBuff[DATA_TOTAL_BYTE] __attribute__((section(".i2c2TxBuff"))) = {0};
 static uint8_t i2c2CommDmaRxBuff[DATA_TOTAL_BYTE] __attribute__((section(".i2c2RxBuff"))) = {0};
 
 uint8_t rxByteDataArray[DATA_TOTAL_BYTE] = {0};
-
-uint32_t txTime = 0;
-uint32_t rxTime = 0;
 
 IOIF_I2CObj_t* i2cPtr = NULL;
 IOIF_I2CObj_t i2cTxObj = {0};
@@ -571,12 +566,12 @@ void SystemClock_Config(void)
 /* USER CODE BEGIN 4 */
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
-	/* TIM1 : I2C1(Master) - Receive */
+	/* TIM1 : I2C2(Slave) - Receive */
 	if (htim == &htim1){
 		IOIF_ReceiveI2CData();
 	}
 
-	/* TIM2 : I2C2(Slave) - Transmit */
+	/* TIM2 : I2C1(Master) - Transmit */
 	if (htim == &htim2){
 		/* Append data to transmit */
 		AppendI2CData(I2C_FLOAT, &txData1);
@@ -594,16 +589,16 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 
 
 		/* Test Data Update */
-//		cnt++;
-//		if (cnt == 1000){
-//			cnt = 0;
-//			txData1++;
-//			txData2++;
-//			txData3++;
-//			txData4++;
-//			txData5++;
-//			txData6++;
-//		}
+		cnt++;
+		if (cnt == 1000){
+			cnt = 0;
+			txData1++;
+			txData2++;
+			txData3++;
+			txData4++;
+			txData5++;
+			txData6++;
+		}
 	}
 }
 /* USER CODE END 4 */
