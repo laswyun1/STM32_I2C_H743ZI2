@@ -422,10 +422,8 @@ uint8_t IOIF_ReceiveI2CData(void)
 {
 	memset(rxByteDataArray, 0, DATA_TOTAL_BYTE);
 	uint8_t rxDebug = HAL_I2C_Slave_Receive_DMA(&hi2c2, i2c2CommDmaRxBuff, DATA_TOTAL_BYTE);
-	if (rxDebug == 0){
-		memcpy(rxByteDataArray, i2c2CommDmaRxBuff, DATA_TOTAL_BYTE);
-		settingI2CReceivedData(rxByteDataArray);
-	}
+	memcpy(rxByteDataArray, i2c2CommDmaRxBuff, DATA_TOTAL_BYTE);
+	settingI2CReceivedData(rxByteDataArray);
 
 	return rxDebug;
 }
@@ -494,10 +492,8 @@ int main(void)
   MX_TIM2_Init();
   /* USER CODE BEGIN 2 */
 
-
   HAL_TIM_Base_Start_IT(&htim1);
   HAL_TIM_Base_Start_IT(&htim2);
-
 
   /* USER CODE END 2 */
 
