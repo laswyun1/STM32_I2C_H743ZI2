@@ -102,15 +102,10 @@ typedef struct _IOIF_I2CObj_t {
 
 /* USER CODE BEGIN PV */
 /* For DMA I2C Communication (with DMA) */
-static uint8_t i2c1CommDmaTxBuff[DATA_TOTAL_BYTE] __attribute__((section(".i2c1TxBuff"))) = {0};
 static uint8_t i2c1CommDmaRxBuff[DATA_TOTAL_BYTE] __attribute__((section(".i2c1RxBuff"))) = {0};
 static uint8_t i2c2CommDmaTxBuff[DATA_TOTAL_BYTE] __attribute__((section(".i2c2TxBuff"))) = {0};
-static uint8_t i2c2CommDmaRxBuff[DATA_TOTAL_BYTE] __attribute__((section(".i2c2RxBuff"))) = {0};
 
 uint8_t rxByteDataArray[DATA_TOTAL_BYTE] = {0};
-
-uint32_t txTime = 0;
-uint32_t rxTime = 0;
 
 IOIF_I2CObj_t* i2cPtr = NULL;
 IOIF_I2CObj_t i2cTxObj = {0};
