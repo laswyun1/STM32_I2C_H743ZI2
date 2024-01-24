@@ -157,9 +157,6 @@ SECTIONS
     .i2c_test_buffer (NOLOAD) :
   {
   	. = ABSOLUTE(0x30000000);
-  	*(.i2c1TxBuff)
-  	*(.i2c1RxBuff)
-  	*(.i2c2TxBuff)
   	*(.i2c2RxBuff)
   } >RAM_D2
   
