@@ -337,6 +337,7 @@ void byteValueToRealValue(void* realData, uint8_t* byteData)
 	else {
 		rxDataIndex = 0;
 		rxDataNum = 0;
+		firstRead = 0;
 		return;
 	}
 
@@ -580,9 +581,6 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 	if (htim == &htim1){
 		IOIF_ReceiveI2CData();
 
-
-
-
 		/* Simple TxRx code */
 //		HAL_I2C_Master_Receive_DMA(&hi2c1, (uint16_t)SLAVE_ADDR, i2c1CommDmaRxBuff, 6);
 //		memcpy(&aaa, i2c1CommDmaRxBuff, 6);
@@ -606,18 +604,16 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 
 
 		/* Test Data Update */
-//		cnt++;
-//		if (cnt == 1000){
-//			cnt = 0;
-//			txData1++;
-//			txData2++;
-//			txData3++;
-//			txData4++;
-//			txData5++;
-//			txData6++;
-//		}
-
-
+		cnt++;
+		if (cnt == 1000){
+			cnt = 0;
+			txData1++;
+			txData2++;
+			txData3++;
+			txData4++;
+			txData5++;
+			txData6++;
+		}
 
 		/* Simple TxRx code */
 //		memcpy(i2c2CommDmaTxBuff, &bbb, 6);
