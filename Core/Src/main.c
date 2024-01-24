@@ -337,6 +337,7 @@ void byteValueToRealValue(void* realData, uint8_t* byteData)
 	else {
 		rxDataIndex = 0;
 		rxDataNum = 0;
+		firstRead = 0;
 		return;
 	}
 
@@ -401,21 +402,15 @@ void settingI2CReceivedData(uint8_t* byteData)
 }
 
 
-/* For Simple TxRx Test */
-uint8_t aaa[6] = {0,1,2,3,4,5};
-uint8_t bbb[6] = {0};
-static uint16_t cnt = 0;
-
-
 
 /* Transmit */
 uint8_t IOIF_TransmitI2CData(void)
 {
 	i2cPtr = &i2cTxObj;
 
-	memset(i2c2CommDmaTxBuff, 0, DATA_TOTAL_BYTE);
-	memcpy(i2c2CommDmaTxBuff, i2cPtr->ParsedI2CByteData, DATA_TOTAL_BYTE);
-	uint8_t txDebug = HAL_I2C_Slave_Transmit_DMA(&hi2c2, i2c2CommDmaTxBuff, DATA_TOTAL_BYTE);
+	memset(i2c1CommDmaTxBuff, 0, DATA_TOTAL_BYTE);
+	memcpy(i2c1CommDmaTxBuff, i2cPtr->ParsedI2CByteData, DATA_TOTAL_BYTE);
+	uint8_t txDebug = HAL_I2C_Master_Transmit_DMA(&hi2c1, (uint16_t)SLAVE_ADDR, i2c1CommDmaTxBuff, DATA_TOTAL_BYTE);
 
 	i2cTxObj = (IOIF_I2CObj_t){0};
 
@@ -426,12 +421,16 @@ uint8_t IOIF_TransmitI2CData(void)
 uint8_t IOIF_ReceiveI2CData(void)
 {
 	memset(rxByteDataArray, 0, DATA_TOTAL_BYTE);
-	uint8_t rxDebug = HAL_I2C_Master_Receive_DMA(&hi2c1, (uint16_t)SLAVE_ADDR, i2c1CommDmaRxBuff, DATA_TOTAL_BYTE);
-	memcpy(rxByteDataArray, i2c1CommDmaRxBuff, DATA_TOTAL_BYTE);
-	settingI2CReceivedData(rxByteDataArray);
+	uint8_t rxDebug = HAL_I2C_Slave_Receive_DMA(&hi2c2, i2c2CommDmaRxBuff, DATA_TOTAL_BYTE);
+	if (rxDebug == 0){
+		memcpy(rxByteDataArray, i2c2CommDmaRxBuff, DATA_TOTAL_BYTE);
+		settingI2CReceivedData(rxByteDataArray);
+	}
 
 	return rxDebug;
 }
+
+uint32_t cnt = 0;
 
 /* USER CODE END PV */
 
@@ -579,13 +578,6 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 	/* TIM1 : I2C1(Master) - Receive */
 	if (htim == &htim1){
 		IOIF_ReceiveI2CData();
-
-
-
-
-		/* Simple TxRx code */
-//		HAL_I2C_Master_Receive_DMA(&hi2c1, (uint16_t)SLAVE_ADDR, i2c1CommDmaRxBuff, 6);
-//		memcpy(&aaa, i2c1CommDmaRxBuff, 6);
 	}
 
 	/* TIM2 : I2C2(Slave) - Transmit */
@@ -616,17 +608,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 //			txData5++;
 //			txData6++;
 //		}
-
-
-
-		/* Simple TxRx code */
-//		memcpy(i2c2CommDmaTxBuff, &bbb, 6);
-//		HAL_I2C_Slave_Transmit_DMA(&hi2c2, i2c2CommDmaTxBuff, 6);
-//		for (uint8_t i = 0; i < 6; i++){
-//			bbb[i]++;
-//		}
 	}
-
 }
 /* USER CODE END 4 */
 
